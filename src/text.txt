@@ -1,0 +1,1 @@
+Vi använder implementationsarv p.g.a. att vi kommer att vilja ändra på

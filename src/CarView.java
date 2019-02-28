@@ -1,3 +1,5 @@
+import Cars.AbstractCar;
+
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -20,7 +22,7 @@ public class CarView extends JFrame implements KeyListener {
     private static final int Y = 800;
 
     // The controller member
-    CarController carC;
+    CarModel carModel;
 
     DrawPanel drawPanel = new DrawPanel(X, Y - 240);
 
@@ -35,15 +37,15 @@ public class CarView extends JFrame implements KeyListener {
     JButton brakeButton = new JButton("Brake");
     JButton turboOnButton = new JButton("Saab Turbo on");
     JButton turboOffButton = new JButton("Saab Turbo off");
-    JButton liftBedButton = new JButton("Scania Lift Bed");
+    JButton liftBedButton = new JButton("Cars.Scania Lift Bed");
     JButton lowerBedButton = new JButton("Lower Lift Bed");
 
     JButton startButton = new JButton("Start all cars");
     JButton stopButton = new JButton("Stop all cars");
 
     // Constructor
-    public CarView(String framename, CarController cc) {
-        this.carC = cc;
+    public CarView(String framename, CarModel cM) {
+        this.carModel = cM;
         initComponents(framename);
     }
 
@@ -101,62 +103,14 @@ public class CarView extends JFrame implements KeyListener {
         this.add(stopButton);
 
         // This actionListener is for the gas button only
-        // TODO: Create more for each component as necessary
-        startButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                carC.startAllEngines();
-            }
-        });
-
-        stopButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                carC.turnOffAllEngines();
-            }
-        });
-
-        gasButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                carC.gas(gasAmount);
-            }
-        });
-
-        turboOnButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                carC.turboOn();
-            }
-        });
-
-        liftBedButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                carC.liftTruckBed();
-            }
-        });
-
-        brakeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                carC.brake(gasAmount);
-            }
-        });
-
         turboOffButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                carC.turboOff();
+                carModel.turboOff();
             }
         });
 
-        lowerBedButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                carC.lowerTruckBed();
-            }
-        });
+
 
 
         // Make the frame pack all it's components by respecting the sizes if possible.
@@ -176,41 +130,42 @@ public class CarView extends JFrame implements KeyListener {
 
     }
 
+
     @Override
     public void keyTyped(KeyEvent e) {
-       // carC.
+       // carModel.
         if (e.getKeyCode() == KeyEvent.VK_RIGHT)
-            carC.setAllDirections(AbstractCar.Direction.EAST);
+            carModel.setAllDirections();
 
         else if (e.getKeyCode() == KeyEvent.VK_LEFT)
-            carC.setAllDirections(AbstractCar.Direction.WEST);
+            carModel.setAllDirections(AbstractCar.Direction.WEST);
         else if (e.getKeyCode() == KeyEvent.VK_DOWN)
-            carC.setAllDirections(AbstractCar.Direction.SOUTH);
+            carModel.setAllDirections(AbstractCar.Direction.SOUTH);
         else if (e.getKeyCode() == KeyEvent.VK_UP)
-            carC.setAllDirections(AbstractCar.Direction.NORTH);
+            carModel.setAllDirections(AbstractCar.Direction.NORTH);
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_RIGHT)
-            carC.setAllDirections(AbstractCar.Direction.EAST);
+            carModel.setAllDirections(AbstractCar.Direction.EAST);
         else if (e.getKeyCode() == KeyEvent.VK_LEFT)
-            carC.setAllDirections(AbstractCar.Direction.WEST);
+            carModel.setAllDirections(AbstractCar.Direction.WEST);
         else if (e.getKeyCode() == KeyEvent.VK_DOWN)
-            carC.setAllDirections(AbstractCar.Direction.SOUTH);
+            carModel.setAllDirections(AbstractCar.Direction.SOUTH);
         else if (e.getKeyCode() == KeyEvent.VK_UP)
-            carC.setAllDirections(AbstractCar.Direction.NORTH);
+            carModel.setAllDirections(AbstractCar.Direction.NORTH);
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_RIGHT)
-            carC.setAllDirections(AbstractCar.Direction.EAST);
+            carModel.setAllDirections(AbstractCar.Direction.EAST);
         else if (e.getKeyCode() == KeyEvent.VK_LEFT)
-            carC.setAllDirections(AbstractCar.Direction.WEST);
+            carModel.setAllDirections(AbstractCar.Direction.WEST);
         else if (e.getKeyCode() == KeyEvent.VK_DOWN)
-            carC.setAllDirections(AbstractCar.Direction.SOUTH);
+            carModel.setAllDirections(AbstractCar.Direction.SOUTH);
         else if (e.getKeyCode() == KeyEvent.VK_UP)
-            carC.setAllDirections(AbstractCar.Direction.NORTH);
+            carModel.setAllDirections(AbstractCar.Direction.NORTH);
     }
 }

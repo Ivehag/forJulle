@@ -1,6 +1,5 @@
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
@@ -11,36 +10,16 @@ import javax.swing.*;
 public class DrawPanel extends JPanel {
 
     // Just a single image, TODO: Generalize
+    private final int MAX_CARS = 3;
     BufferedImage volvoImage;
     BufferedImage saabImage;
     BufferedImage scaniaImage;
 
-
+    ArrayList<BufferedImage> carImages;
+    int[] coordinates = new int[2 * MAX_CARS];
     // To keep track of a single car's position
-    Point volvoPoint = new Point();
-    Point saabPoint = new Point();
-    Point scaniaPoint = new Point();
 
-
-    // TODO: Make this general for all cars
-    void moveit(AbstractCar car, int x, int y) {
-        updateCarPoints(x, y, volvoPoint);
-    }
-
-    void moveit(ITruckBed car, int x, int y) {
-        updateCarPoints(x, y, scaniaPoint);
-    }
-
-    void moveit(ITurbo car, int x, int y) {
-        updateCarPoints(x, y, saabPoint);
-    }
-
-
-
-    private void updateCarPoints(int x, int y, Point carPoints) {
-        carPoints.x = x;
-        carPoints.y = y;
-    }
+    CarModel cM;
 
     // Initializes the panel and reads the images
     public DrawPanel(int x, int y) {
@@ -51,13 +30,22 @@ public class DrawPanel extends JPanel {
         try {
             // You can remove the "pics" part if running outside of IntelliJ and
             // everything is in the same main folder.
-            //volvoImage = ImageIO.read(new File("pics/Volvo240.jpg"));
+            //volvoImage = ImageIO.read(new File("pics/Cars.Volvo240.jpg"));
 
             // Rememember to rightclick src New -> Package -> name: pics -> MOVE *.jpg to pics.
             // if you are starting in IntelliJ.
-            volvoImage = ImageIO.read(DrawPanel.class.getResourceAsStream("pics/Volvo240.jpg"));
+            for (int i = 0; i < MAX_CARS; i++) {
+                carImages.add(ImageIO.read(DrawPanel.class.getResourceAsStream("pics/" + cM.getModelName(i) + ".jpg")));
+            }
+            for (int i = 0; i < MAX_CARS; i++) {
+                coordinates[i] = cM.getX();
+                coordinates[i + 1] = cM.getY();
+            }
+
+   /*         volvoImage = ImageIO.read(DrawPanel.class.getResourceAsStream("pics/Volvo240.jpg"));
             saabImage = ImageIO.read(DrawPanel.class.getResourceAsStream("pics/Saab95.jpg"));
             scaniaImage = ImageIO.read(DrawPanel.class.getResourceAsStream("pics/Scania.jpg"));
+   */
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -69,7 +57,11 @@ public class DrawPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(volvoImage, volvoPoint.x, volvoPoint.y, null); // see javadoc for more info on the parameters
+        for (int i = 0; i < MAX_CARS; i++) {
+            g.drawImage(carImages.get(i), coordinates[2 * i], coordinates[2 * i + 1], null);
+        }
+
+        g.drawImage(volvoImage, cM.getVolvoPointX(), volvoPoint.y, null); // see javadoc for more info on the parameters
         g.drawImage(saabImage, saabPoint.x, saabPoint.y, null);
         g.drawImage(scaniaImage, scaniaPoint.x, scaniaPoint.y, null);
     }
